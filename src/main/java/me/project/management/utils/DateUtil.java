@@ -15,10 +15,6 @@ import java.util.Date;
  */
 public class DateUtil {
 
-    /**
-     * Date formatter for date without time zone.
-     * The format used is <tt>mm/dd/yyyy</tt>.
-     */
     public static final DateFormat DATA_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
@@ -36,7 +32,7 @@ public class DateUtil {
     public static Date strToDt(String str) {
         Date dt = null;
         try {
-            if (str != null && str.length() > 7) {
+            if (str != null) {
                 dt = DATA_FORMAT.parse(str);
             }
         } catch (ParseException e) {
@@ -58,39 +54,5 @@ public class DateUtil {
         }
         return str;
     }
-
-    /**
-     * Change date by adding month
-     *
-     * @param date Date
-     * @param addMonth Integer
-     * @return date
-     */
-    public static Date addMonth(Date date, Integer addMonth) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-
-        calendar.add(Calendar.MONTH, addMonth);
-        return calendar.getTime();
-    }
-
-    /**
-     * get default future last date.
-     *
-     * @return Date
-     */
-    public static Date getDefaultFirstDate() {
-        return DateUtil.strToDt("01/01/2000");
-    }
-
-    /**
-     * get default future last date.
-     *
-     * @return Date
-     */
-    public static Date getDefaultFutureDate() {
-        return DateUtil.strToDt("01/01/2900");
-    }
-
 
 }

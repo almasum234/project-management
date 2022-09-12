@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Date;
 @ApiModel("添加用户")
 public class UpdateProjectDTO {
 
-    @NotBlank
+    @NotNull(message = "status can't empty")
     @ApiModelProperty("status")
     private Integer status;
 

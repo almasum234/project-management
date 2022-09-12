@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import me.project.management.entity.Project;
+import me.project.management.enums.Status;
 import me.project.management.mapper.ProjectMapper;
 import me.project.management.service.ProjectService;
 import me.project.management.utils.DateUtil;
@@ -34,19 +35,19 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
                     .name(data.getName())
                     .intro(data.getIntro())
                     .owner(data.getOwner())
-                    .status(data.getStatus())
+                    .status(Status.PRE.getValue())
                     .build();
             this.save(project);
         } else {
-            throw new RuntimeException("Project not found");
+            throw new RuntimeException("Project name already exists");
         }
 
-        return this.convert(project);
+        return this.mapProjectInfoDTO(project);
     }
 
     @Override
     public ProjectInfoDTO updateProjectStatus(Integer id, UpdateProjectDTO data) {
-        Project project = Optional.ofNullable(this.getById(id)).orElseThrow(() -> new RuntimeException("Project not found"));
+        Project project = Optional.ofNullable(this.getById(id)).orElseThrow(() -> new RuntimeException("Project not found by Id"));
         if (data.getStartDateTime() != null) {
             project.setStartDateTime(DateUtil.strToDt(data.getStartDateTime()));
         }
@@ -55,12 +56,12 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         }
         project.setStatus(data.getStatus());
         this.updateById(project);
-        return this.convert(project);
+        return this.mapProjectInfoDTO(project);
     }
 
     @Override
     public ProjectInfoDTO getProjectInfo(Integer id) {
-        return this.convert(Optional.ofNullable(this.getById(id)).orElseGet(Project::new));
+        return this.mapProjectInfoDTO(Optional.ofNullable(this.getById(id)).orElseGet(Project::new));
     }
 
     @Override
@@ -70,15 +71,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         Page<ProjectInfoDTO> pageRet = new Page<>();
         BeanUtils.copyProperties(page, pageRet);
         pageRet.setRecords(page.getRecords().stream()
-                .map(project -> ProjectInfoDTO.builder()
-                        .id(project.getId())
-                        .name(project.getName())
-                        .intro(project.getIntro())
-                        .owner(project.getOwner())
-                        .status(project.getStatus())
-                        .startDateTime(project.getStartDateTime() != null ? DateUtil.dtToStr(project.getStartDateTime()): null)
-                        .endDateTime(project.getEndDateTime() != null ? DateUtil.dtToStr(project.getEndDateTime()): null)
-                        .build())
+                .map(this::mapProjectInfoDTO)
                 .collect(Collectors.toList()));
 
         return pageRet;
@@ -88,15 +81,15 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         return Optional.ofNullable(this.getOne(Wrappers.<Project>lambdaQuery().eq(Project::getName, name)));
     }
 
-    private ProjectInfoDTO convert(Project project) {
+    private ProjectInfoDTO mapProjectInfoDTO(Project project) {
         return ProjectInfoDTO.builder()
                 .id(project.getId())
                 .name(project.getName())
                 .intro(project.getIntro())
                 .owner(project.getOwner())
-                .status(project.getStatus())
-                .startDateTime(project.getStartDateTime() != null ? DateUtil.dtToStr(project.getStartDateTime()): null)
-                .endDateTime(project.getEndDateTime() != null ? DateUtil.dtToStr(project.getEndDateTime()): null)
+                .status(Status.getByValue(project.getStatus()).getText())
+                .startDateTime(project.getStartDateTime() != null ? DateUtil.dtToStr(project.getStartDateTime()) : null)
+                .endDateTime(project.getEndDateTime() != null ? DateUtil.dtToStr(project.getEndDateTime()) : null)
                 .build();
     }
 }

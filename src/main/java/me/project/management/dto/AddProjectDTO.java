@@ -28,10 +28,10 @@ public class AddProjectDTO {
     @NotBlank(message = "Owner name is mandatory")
     private String owner;
 
-    @NotNull(message = "Status can not empty")
-    private Integer status;
-
-    private String startDateTime;
-
-    private String endDateTime;
+//    @NotNull(message = "Status can not empty")
+//    private Integer status;
+//
+//    private String startDateTime;
+//
+//    private String endDateTime;
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -21,18 +22,13 @@ public class ProjectInfoDTO {
 
     private Long id;
 
-    @NotBlank
     private String name;
 
-    @NotBlank
-    @ApiModelProperty("introduce")
     private String intro;
 
-    @NotBlank
     private String owner;
 
-    @NotBlank
-    private Integer status;
+    private String status;
 
     private String startDateTime;
 

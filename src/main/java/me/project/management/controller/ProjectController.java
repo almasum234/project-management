@@ -37,6 +37,7 @@ public class ProjectController {
     @ApiOperation(value = "updateProjectStatus", response = ProjectInfoDTO.class)
     public ResponseEntity updateProjectStatus(@PathVariable Integer id,
                                               @RequestBody @Validated UpdateProjectDTO data) {
+        validateProjectStatus(data);
         return ResponseEntity.ok(projectService.updateProjectStatus(id, data));
     }
 
@@ -45,6 +46,15 @@ public class ProjectController {
     public ResponseEntity pageUserInfo(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
                                        @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         return ResponseEntity.ok(projectService.pageProjectInfo(pageIndex, pageSize));
+    }
+
+    private void validateProjectStatus(UpdateProjectDTO data) {
+        Integer status = data.getStatus();
+        if (status.equals(1) && data.getStartDateTime() == null) {
+            throw new RuntimeException("Invalid project start date");
+        } else if (status.equals(2) && data.getEndDateTime() == null) {
+            throw new RuntimeException("Invalid project end date");
+        }
     }
 
 }
