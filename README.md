@@ -29,7 +29,7 @@ Implement 3 Tasks in 2 days
 1. Implement the log in API
 
 HTTP Request Method: POST
-Should return the JWT, nickname, accountId of current user as a object property each.
+Should return the JWT, nickname, accountId of current userAccount as a object property each.
 
 2. Implement the create a project API
 HTTP Request Method: POST
@@ -58,7 +58,7 @@ project status is not end , it should be null
 ## Database Setup:
 • Please create a database as ‘pm_db’ and update the database username and password in 'application.properties' file before run the application.
 • No need to run any database DDL script for this application.
-• Run the following Query insert script for create user before login to the system [Here system username/password: user/1234]
+• Run the following Query insert script for create userAccount before login to the system [Here system username/password: userAccount/1234]
 CREATE TABLE `project` (
     `id`      int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     `name`    varchar(255) NOT NULL,

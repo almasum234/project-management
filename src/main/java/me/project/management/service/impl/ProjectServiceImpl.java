@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import me.project.management.dto.AddProjectDTO;
-import me.project.management.dto.ProjectInfoDTO;
-import me.project.management.dto.UpdateProjectDTO;
+import me.project.management.dto.AddProjectDto;
+import me.project.management.dto.ProjectInfoDto;
+import me.project.management.dto.UpdateProjectDto;
 import me.project.management.entity.Project;
 import me.project.management.enums.Status;
 import me.project.management.exception.ArgumentNotValidException;
@@ -18,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ProjectInfoDTO createProject(AddProjectDTO data) {
+    public ProjectInfoDto createProject(AddProjectDto data) {
         Project project;
         String name = data.getName();
         Optional<Project> opt = this.existsByName(name);
@@ -43,6 +44,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
                     .build();
             this.save(project);
         } else {
+            log.warn("Project name already exists, name:" + name);
             throw new ArgumentNotValidException("Project name already exists, name:" + name);
         }
 
@@ -50,31 +52,42 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     }
 
     @Override
-    public ProjectInfoDTO updateProjectStatus(Integer id, UpdateProjectDTO data) {
+    public ProjectInfoDto updateProjectStatus(Integer id, UpdateProjectDto data) {
         Project project = Optional.ofNullable(this.getById(id))
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found  by id:" + id));
-        if (data.getStartDateTime() != null) {
+        Status status = Status.getByValue(data.getStatus())
+                .orElseThrow(() -> new ArgumentNotValidException("Invalid project status: " + data.getStatus()));
+        if (status == Status.START) {
             project.setStartDateTime(DateUtil.strToDt(data.getStartDateTime()));
-        }
-        if (data.getEndDateTime() != null) {
+            project.setEndDateTime(null);
+        } else if (status == Status.END) {
             project.setEndDateTime(DateUtil.strToDt(data.getEndDateTime()));
+            project.setStartDateTime(null);
         }
-        project.setStatus(data.getStatus());
-        this.updateById(project);
+        project.setStatus(status.getValue());
+        project.setUpdated(new Date());
+        this.lambdaUpdate()
+                .eq(Project::getId, project.getId())
+                .set(Project::getStatus, project.getStatus())
+                .set(Project::getStartDateTime, project.getStartDateTime())
+                .set(Project::getEndDateTime, project.getEndDateTime())
+                .set(Project::getUpdated, project.getUpdated())
+                .update();
+//        this.updateById(project);
         return this.mapProjectInfoDTO(project);
     }
 
     @Override
-    public ProjectInfoDTO getProjectInfo(Integer id) {
+    public ProjectInfoDto getProject(Integer id) {
         return this.mapProjectInfoDTO(Optional.ofNullable(this.getById(id))
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found by id:" + id)));
     }
 
     @Override
-    public Page<ProjectInfoDTO> pageProjectInfo(Integer pageNum, Integer pageSize) {
+    public Page<ProjectInfoDto> getPageProjects(Integer pageNum, Integer pageSize) {
         Page<Project> page = this.page(new Page<>(pageNum, pageSize));
 
-        Page<ProjectInfoDTO> pageProjects = new Page<>();
+        Page<ProjectInfoDto> pageProjects = new Page<>();
         BeanUtils.copyProperties(page, pageProjects);
         pageProjects.setRecords(page.getRecords().stream()
                 .map(this::mapProjectInfoDTO)
@@ -87,9 +100,9 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
         return Optional.ofNullable(this.getOne(Wrappers.<Project>lambdaQuery().eq(Project::getName, name)));
     }
 
-    private ProjectInfoDTO mapProjectInfoDTO(Project project) {
+    private ProjectInfoDto mapProjectInfoDTO(Project project) {
         Status status = Status.getByValue(project.getStatus()).orElse(null);
-        return ProjectInfoDTO.builder()
+        return ProjectInfoDto.builder()
                 .id(project.getId())
                 .name(project.getName())
                 .intro(project.getIntro())

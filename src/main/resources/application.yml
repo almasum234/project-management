@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 8080
 spring:
   application:
     name: project-management-mybatis-app
@@ -7,7 +7,7 @@ spring:
     file: ${spring.application.name}.pid
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mybatis_plus_example?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/pm_db?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
     username: root
     password: 1234
   mvc:
@@ -21,6 +21,8 @@ logging:
     me.project.management: debug
   file:
     name: ${spring.application.name}.log
+jwt:
+  secret: techgeeknext
 swagger:
   enabled: true
   version: 1.1.0

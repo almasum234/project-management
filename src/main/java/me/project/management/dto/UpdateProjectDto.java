@@ -6,16 +6,17 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
  * @author masum
  */
 @Data
-@ApiModel("添加用户")
-public class UpdateProjectDTO {
+@ApiModel("UpdateProjectDto")
+public class UpdateProjectDto {
 
-    @NotNull(message = "status can't empty")
+    @NotNull(message = "Project status can't be empty")
     @ApiModelProperty("status")
     private Integer status;
 

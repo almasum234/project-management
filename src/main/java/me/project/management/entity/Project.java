@@ -21,7 +21,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("用户信息")
+@ApiModel("Project")
 @TableName(value = "project")
 public class Project implements Serializable {
 
@@ -55,6 +55,5 @@ public class Project implements Serializable {
 
     @ApiModelProperty("updated")
     private Date updated;
-
 
 }

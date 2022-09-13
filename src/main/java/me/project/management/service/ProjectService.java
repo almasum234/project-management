@@ -12,11 +12,11 @@ import me.project.management.entity.Project;
  */
 public interface ProjectService extends IService<Project> {
 
-    ProjectInfoDTO createProject(AddProjectDTO data);
+    ProjectInfoDto createProject(AddProjectDto data);
 
-    ProjectInfoDTO updateProjectStatus(Integer id, UpdateProjectDTO data);
+    ProjectInfoDto updateProjectStatus(Integer id, UpdateProjectDto data);
 
-    ProjectInfoDTO getProjectInfo(Integer id);
+    ProjectInfoDto getProject(Integer id);
 
-    Page<ProjectInfoDTO> pageProjectInfo(Integer pageNum, Integer pageSize);
+    Page<ProjectInfoDto> getPageProjects(Integer pageNum, Integer pageSize);
 }

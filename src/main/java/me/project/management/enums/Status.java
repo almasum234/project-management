@@ -5,10 +5,12 @@ import java.util.Optional;
 
 public enum Status {
 
-    PRE(0, "pre"), START(1, "start"), END(2, "end");
+    PRE(0, "pre"),
+    START(1, "start"),
+    END(2, "end");
 
-    private Integer value;
-    private String text;
+    private final Integer value;
+    private final String text;
 
     Status(Integer value, String text) {
         this.value = value;
