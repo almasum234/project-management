@@ -1,12 +1,16 @@
 package me.project.management.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.project.management.dto.AddProjectDTO;
 import me.project.management.dto.ProjectInfoDTO;
 import me.project.management.dto.UpdateProjectDTO;
+import me.project.management.enums.Status;
+import me.project.management.exception.ArgumentNotValidException;
 import me.project.management.service.ProjectService;
+import me.project.management.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -29,13 +33,13 @@ public class ProjectController {
 
     @GetMapping("{id}")
     @ApiOperation(value = "getProjectInfo", response = ProjectInfoDTO.class)
-    public ResponseEntity getProjectInfo(@PathVariable Integer id) {
+    public ResponseEntity<ProjectInfoDTO> getProjectInfo(@PathVariable Integer id) {
         return ResponseEntity.ok(projectService.getProjectInfo(id));
     }
 
     @PutMapping("{id}")
     @ApiOperation(value = "updateProjectStatus", response = ProjectInfoDTO.class)
-    public ResponseEntity updateProjectStatus(@PathVariable Integer id,
+    public ResponseEntity<ProjectInfoDTO> updateProjectStatus(@PathVariable Integer id,
                                               @RequestBody @Validated UpdateProjectDTO data) {
         validateProjectStatus(data);
         return ResponseEntity.ok(projectService.updateProjectStatus(id, data));
@@ -43,18 +47,21 @@ public class ProjectController {
 
     @GetMapping("info")
     @ApiOperation(value = "get pageProjectInfo", response = ProjectInfoDTO.class, responseContainer = "List")
-    public ResponseEntity pageUserInfo(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
-                                       @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<Page<ProjectInfoDTO>> pageUserInfo(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
+                                                             @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         return ResponseEntity.ok(projectService.pageProjectInfo(pageIndex, pageSize));
     }
 
-    private void validateProjectStatus(UpdateProjectDTO data) {
-        Integer status = data.getStatus();
-        if (status.equals(1) && data.getStartDateTime() == null) {
-            throw new RuntimeException("Invalid project start date");
-        } else if (status.equals(2) && data.getEndDateTime() == null) {
-            throw new RuntimeException("Invalid project end date");
+    private void validateProjectStatus(UpdateProjectDTO projectDTO) {
+        if (projectDTO.getStatus() == null) {
+            throw new ArgumentNotValidException("Invalid project status");
         }
+        Status status = Status.getByValue(projectDTO.getStatus())
+                .orElseThrow(() -> new ArgumentNotValidException("Invalid project status: " + projectDTO.getStatus()));
+        if (status == Status.START && DateUtil.strToDt(projectDTO.getStartDateTime()) == null) {
+            throw new ArgumentNotValidException("Invalid project start date");
+        } else if (status == Status.END && DateUtil.strToDt(projectDTO.getEndDateTime()) == null)
+            throw new ArgumentNotValidException("Invalid project end date");
     }
 
 }

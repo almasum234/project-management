@@ -5,10 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
 
 /**
  * @author masum
@@ -21,17 +18,11 @@ public class AddProjectDTO {
     @Size(max = 20, message = "name")
     private String name;
 
-    @NotBlank(message = "introduce is mandatory")
+    @NotBlank(message = "Project intro is mandatory")
     @ApiModelProperty("intro")
     private String intro;
 
-    @NotBlank(message = "Owner name is mandatory")
+    @NotBlank(message = "Project owner name is mandatory")
     private String owner;
 
-//    @NotNull(message = "Status can not empty")
-//    private Integer status;
-//
-//    private String startDateTime;
-//
-//    private String endDateTime;
 }

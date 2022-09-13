@@ -1,6 +1,7 @@
 package me.project.management.enums;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public enum Status {
 
@@ -22,10 +23,9 @@ public enum Status {
         return text;
     }
 
-    public static Status getByValue(Integer value) {
+    public static Optional<Status> getByValue(Integer value) {
         return Arrays.stream(Status.values())
                 .filter(wallet -> wallet.getValue().equals(value))
-                .findAny()
-                .orElse(null);
+                .findAny();
     }
 }
