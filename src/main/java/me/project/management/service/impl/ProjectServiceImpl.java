@@ -23,7 +23,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * @author masum
+ * @author Abdullah Al Masum
+ * @version 1.0
+ * @since 13-09-2022
  */
 @Slf4j
 @Service
@@ -57,12 +59,14 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found  by id:" + id));
         Status status = Status.getByValue(data.getStatus())
                 .orElseThrow(() -> new ArgumentNotValidException("Invalid project status: " + data.getStatus()));
-        if (status == Status.START) {
+        if (status == Status.PRE) {
+            project.setStartDateTime(null);
+            project.setEndDateTime(null);
+        } else if (status == Status.START) {
             project.setStartDateTime(DateUtil.strToDt(data.getStartDateTime()));
             project.setEndDateTime(null);
         } else if (status == Status.END) {
             project.setEndDateTime(DateUtil.strToDt(data.getEndDateTime()));
-            project.setStartDateTime(null);
         }
         project.setStatus(status.getValue());
         project.setUpdated(new Date());

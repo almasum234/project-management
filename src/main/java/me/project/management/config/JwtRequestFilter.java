@@ -17,7 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
+/**
+ * @author Abdullah Al Masum
+ * @version 1.0
+ * @since 13-09-2022
+ */
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 

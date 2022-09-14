@@ -7,7 +7,9 @@ import me.project.management.entity.UserAccount;
 import java.util.Optional;
 
 /**
- * @author masum
+ * @author Abdullah Al Masum
+ * @version 1.0
+ * @since 13-09-2022
  */
 public interface UserAccountService extends IService<UserAccount> {
 

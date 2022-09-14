@@ -10,7 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * @author masum
+ * @author Abdullah Al Masum
+ * @version 1.0
+ * @since 13-09-2022
  */
 @Configuration
 @EnableTransactionManagement

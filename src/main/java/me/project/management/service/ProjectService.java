@@ -2,13 +2,15 @@ package me.project.management.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import me.project.management.dto.*;
+import me.project.management.dto.AddProjectDto;
+import me.project.management.dto.ProjectInfoDto;
+import me.project.management.dto.UpdateProjectDto;
 import me.project.management.entity.Project;
 
 /**
- * User service
- *
- * @author masum
+ * @author Abdullah Al Masum
+ * @version 1.0
+ * @since 13-09-2022
  */
 public interface ProjectService extends IService<Project> {
 

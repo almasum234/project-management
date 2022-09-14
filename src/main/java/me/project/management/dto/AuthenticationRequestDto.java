@@ -9,20 +9,25 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+/**
+ * @author Abdullah Al Masum
+ * @version 1.0
+ * @since 13-09-2022
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthenticationRequestDto implements Serializable {
 
-	private static final long serialVersionUID = 5926468583005150707L;
+    private static final long serialVersionUID = 5926468583005150707L;
 
-	@NotBlank(message = "Username is mandatory")
-	@Size(max = 255, message = "User name text length should not be more then 255 character(s)")
-	private String username;
+    @NotBlank(message = "Username is mandatory")
+    @Size(max = 255, message = "User name text length should not be more then 255 character(s)")
+    private String username;
 
-	@NotBlank(message = "Password is mandatory")
-	@Size(max = 100, message = "Password text length should not be more then 100 character(s)")
-	private String password;
+    @NotBlank(message = "Password is mandatory")
+    @Size(max = 100, message = "Password text length should not be more then 100 character(s)")
+    private String password;
 
 }

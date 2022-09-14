@@ -3,23 +3,19 @@ package me.project.management.utils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
  * Util class for different type of operation
  *
- * @author masum
+ * @author Abdullah Al Masum
  * @version 1.0
- * @since 05-06-2020
+ * @since 13-09-2022
  */
 public class DateUtil {
 
     public static final DateFormat DATA_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    /**
-     * Constructor.
-     */
     private DateUtil() {
     }
 

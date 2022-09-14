@@ -3,6 +3,11 @@ package me.project.management.enums;
 import java.util.Arrays;
 import java.util.Optional;
 
+/**
+ * @author Abdullah Al Masum
+ * @version 1.0
+ * @since 13-09-2022
+ */
 public enum Status {
 
     PRE(0, "pre"),

@@ -18,6 +18,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+
+/**
+ * @author Abdullah Al Masum
+ * @version 1.0
+ * @since 13-09-2022
+ */
 @RestController
 @CrossOrigin
 @RequestMapping("/api")
@@ -41,7 +47,7 @@ public class JwtAuthenticationController {
         return ResponseEntity.ok(userAccountService.saveUserAccount(user));
     }
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody AuthenticationRequestDto authenticationRequest) throws Exception {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());

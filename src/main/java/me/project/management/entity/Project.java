@@ -15,7 +15,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author masum
+ * @author Abdullah Al Masum
+ * @version 1.0
+ * @since 13-09-2022
  */
 @Data
 @Builder

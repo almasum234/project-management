@@ -1,6 +1,6 @@
 ## -------------- APPLICATION FOR PROJECT MANAGEMENT --------------  ## 
 ## User Requirements Mini-Specification  
-You will be creating a simple Web-based application for prescription generation  
+This is for REST APIs communication for simple Web-based application  for project management
 
 ## User Stories The high level functional requirements are as follows. 
 System Requirements
@@ -13,7 +13,7 @@ MySQL: 5.7
 The use cases just helps to comprehend the requirements.
 1. Project managers can log in to the system using the administrator and a preset password.
 2. Project managers can record project info into the system.
-A project must contains name, introduction,owner,start date time,end date time, current status.
+A project must contains name, introduction, owner, start date time, end date time, current status.
 3. Project managers can make projects prepare/start/end.
 4. Project managers can explore all projects
 

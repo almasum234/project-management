@@ -1,8 +1,15 @@
 package me.project.management.dto;
 
+import lombok.Getter;
 import org.springframework.security.core.userdetails.User;
 
+/**
+ * @author Abdullah Al Masum
+ * @version 1.0
+ * @since 13-09-2022
+ */
 
+@Getter
 public class UserAccountResponseDto extends User {
 
     private final User user;
@@ -14,17 +21,5 @@ public class UserAccountResponseDto extends User {
         this.nickname = nickname;
         this.accountId = accountId;
         this.user = user;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public Long getAccountId() {
-        return accountId;
     }
 }
