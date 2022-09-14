@@ -51,9 +51,9 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.updateProjectStatus(id, data));
     }
 
-    @GetMapping("info")
+    @GetMapping("list")
     @ApiOperation(value = "get pageProjectInfo", response = ProjectInfoDto.class, responseContainer = "List")
-    public ResponseEntity<Page<ProjectInfoDto>> pageUserInfo(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
+    public ResponseEntity<Page<ProjectInfoDto>> getPageProjects(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
                                                              @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         return ResponseEntity.ok(projectService.getPageProjects(pageIndex, pageSize));
     }
