@@ -1,4 +1,5 @@
-## --------APPLICATION FOR PROJECT MANAGEMENT ----------  ## 
+# APPLICATION FOR PROJECT MANAGEMENT # 
+
 ## User Requirements Mini-Specification  
 This is for REST APIs communication for simple Web-based application  for project management
 
@@ -17,7 +18,7 @@ A project must contains name, introduction, owner, start date time, end date tim
 3. Project managers can make projects prepare/start/end.
 4. Project managers can explore all projects
 
-## DEVELOPMENT Requirement
+## Development Requirement:
 Technology used:
 JDK: 1.8
 SpringBoot: 2.7.1
@@ -25,7 +26,7 @@ MybatisPlus: 3.4.1
 MySQL: 5.7
 Swagger: 1.9.1
 
-## Serve the following implementation :
+## Serve the following implementation:
 Implement 3 Tasks in 2 days
 1. Implement the log in API
  HTTP Request Method: POST
@@ -86,7 +87,7 @@ PRIMARY KEY (`id`)
 );
 ``
 
-## User instruction
+## User instruction:
 1. For swagger use the URL: http://localhost:8080/swagger-ui.html
 2. Register a user before login (http://localhost:8080/api/register)
 3. Use [Bearer jwt-token-XXXXXX] for other request
