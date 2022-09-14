@@ -1,10 +1,10 @@
 package me.project.management.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import me.project.management.dto.AddProjectDto;
+import me.project.management.dto.PageProjectInfoResponseDto;
 import me.project.management.dto.ProjectInfoDto;
 import me.project.management.dto.UpdateProjectDto;
 import me.project.management.enums.Status;
@@ -52,9 +52,9 @@ public class ProjectController {
     }
 
     @GetMapping("list")
-    @ApiOperation(value = "get pageProjectInfo", response = ProjectInfoDto.class, responseContainer = "List")
-    public ResponseEntity<Page<ProjectInfoDto>> getPageProjects(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
-                                                             @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+    @ApiOperation(value = "getPageProjects", response = ProjectInfoDto.class, responseContainer = "List")
+    public ResponseEntity<PageProjectInfoResponseDto> getPageProjects(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
+                                                                      @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         return ResponseEntity.ok(projectService.getPageProjects(pageIndex, pageSize));
     }
 

@@ -1,8 +1,8 @@
 package me.project.management.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import me.project.management.dto.AddProjectDto;
+import me.project.management.dto.PageProjectInfoResponseDto;
 import me.project.management.dto.ProjectInfoDto;
 import me.project.management.dto.UpdateProjectDto;
 import me.project.management.entity.Project;
@@ -20,5 +20,5 @@ public interface ProjectService extends IService<Project> {
 
     ProjectInfoDto getProject(Integer id);
 
-    Page<ProjectInfoDto> getPageProjects(Integer pageNum, Integer pageSize);
+    PageProjectInfoResponseDto getPageProjects(Integer pageNum, Integer pageSize);
 }

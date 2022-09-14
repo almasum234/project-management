@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import me.project.management.dto.AddProjectDto;
+import me.project.management.dto.PageProjectInfoResponseDto;
 import me.project.management.dto.ProjectInfoDto;
 import me.project.management.dto.UpdateProjectDto;
 import me.project.management.entity.Project;
@@ -15,10 +16,12 @@ import me.project.management.mapper.ProjectMapper;
 import me.project.management.service.ProjectService;
 import me.project.management.utils.DateUtil;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,6 +33,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> implements ProjectService {
+
+    public static final String PROJECT_LIST_SUCCESSFUL = "Get project list successful";
+    public static final String PROJECT_LIST_FAILED = "Get project list failed";
+    public static final String STATUS_SUCCESS = "1";
+    public static final String STATUS_FAILED = "0";
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -88,16 +96,24 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     }
 
     @Override
-    public Page<ProjectInfoDto> getPageProjects(Integer pageNum, Integer pageSize) {
-        Page<Project> page = this.page(new Page<>(pageNum, pageSize));
-
+    public PageProjectInfoResponseDto getPageProjects(Integer pageNum, Integer pageSize) {
+        PageProjectInfoResponseDto responseDto;
         Page<ProjectInfoDto> pageProjects = new Page<>();
-        BeanUtils.copyProperties(page, pageProjects);
-        pageProjects.setRecords(page.getRecords().stream()
-                .map(this::mapProjectInfoDTO)
-                .collect(Collectors.toList()));
+        try {
+            Page<Project> page = this.page(new Page<>(pageNum, pageSize));
+            BeanUtils.copyProperties(page, pageProjects);
+            List<ProjectInfoDto> records = page.getRecords().stream()
+                    .map(this::mapProjectInfoDTO)
+                    .collect(Collectors.toList());
+            pageProjects.setRecords(records);
 
-        return pageProjects;
+            responseDto = new PageProjectInfoResponseDto(pageProjects, STATUS_SUCCESS, PROJECT_LIST_SUCCESSFUL);
+            responseDto.setRecords(records);
+        } catch (BeansException e) {
+            responseDto = new PageProjectInfoResponseDto(pageProjects, STATUS_FAILED, PROJECT_LIST_FAILED);
+        }
+
+        return responseDto;
     }
 
     private Optional<Project> existsByName(String name) {
