@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import me.project.management.dto.UserAccountDto;
 import me.project.management.entity.UserAccount;
+import me.project.management.exception.ArgumentNotValidException;
 import me.project.management.mapper.UserAccountMapper;
 import me.project.management.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +33,20 @@ public class UserAccountServiceImpl extends ServiceImpl<UserAccountMapper, UserA
 
     @Override
     public UserAccount saveUserAccount(UserAccountDto data) {
-        UserAccount userAccount = UserAccount.builder()
-                .username(data.getUsername())
-                .password(bcryptEncoder.encode(data.getPassword()))
-                .nickname(data.getNickname())
-                .build();
-        this.save(userAccount);
+        UserAccount userAccount;
+        String username = data.getUsername();
+        Optional<UserAccount> opt = this.findByUsername(username);
+        if (!opt.isPresent()) {
+            userAccount = UserAccount.builder()
+                    .username(username)
+                    .password(bcryptEncoder.encode(data.getPassword()))
+                    .nickname(data.getNickname())
+                    .build();
+            this.save(userAccount);
+        } else {
+            log.warn("User name already exists, username: " + username);
+            throw new ArgumentNotValidException("User name already exists, username: " + username);
+        }
         return userAccount;
     }
 

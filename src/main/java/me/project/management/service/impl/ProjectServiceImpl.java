@@ -46,8 +46,8 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
                     .build();
             this.save(project);
         } else {
-            log.warn("Project name already exists, name:" + name);
-            throw new ArgumentNotValidException("Project name already exists, name:" + name);
+            log.warn("Project name already exists, name: " + name);
+            throw new ArgumentNotValidException("Project name already exists, name: " + name);
         }
 
         return this.mapProjectInfoDTO(project);
@@ -56,7 +56,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     @Override
     public ProjectInfoDto updateProjectStatus(Integer id, UpdateProjectDto data) {
         Project project = Optional.ofNullable(this.getById(id))
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found  by id:" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found  by id: " + id));
         Status status = Status.getByValue(data.getStatus())
                 .orElseThrow(() -> new ArgumentNotValidException("Invalid project status: " + data.getStatus()));
         if (status == Status.PRE) {
@@ -84,7 +84,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
     @Override
     public ProjectInfoDto getProject(Integer id) {
         return this.mapProjectInfoDTO(Optional.ofNullable(this.getById(id))
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found by id:" + id)));
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found by id: " + id)));
     }
 
     @Override
